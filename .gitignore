@@ -12,6 +12,9 @@ web-build/
 environment
 yarn.lock
 babel.config
+assets
+.expo
+.expo/shared
 
 # macOS
 .DS_Store
