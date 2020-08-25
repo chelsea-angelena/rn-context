@@ -1,8 +1,8 @@
 import 'react-native-gesture-handler';
 import React, { useContext } from 'react';
-import { SafeAreaView, FlatList, StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet, View, FlatList } from 'react-native';
 import { Context } from '../Context/BlogContext';
-// import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import {
 	Icon,
 	ListItem,
@@ -10,6 +10,7 @@ import {
 	Text,
 	Button,
 	Divider,
+	TouchableOpacity,
 } from 'react-native-elements';
 import colors from '../../colors';
 const theme = {
@@ -20,8 +21,7 @@ const theme = {
 };
 
 export default function IndexScreen() {
-	const { state, addBlogPost } = useContext(Context);
-
+	const { state, addBlogPost, deleteBlogPost } = useContext(Context);
 	return (
 		<ThemeProvider theme={theme}>
 			<View>
@@ -41,24 +41,33 @@ export default function IndexScreen() {
 					title='Add Post'
 					onPress={addBlogPost}
 				/>
-
 				<FlatList
 					data={state}
 					keyExtractor={(blogPost) => blogPost.title}
 					renderItem={({ item }) => {
 						return (
 							<ListItem
-								style={{ height: 116 }}
 								title={item.title}
+								style={{ height: 116 }}
 								titleStyle={{
 									fontFamily: 'HelveticaNeue-Medium',
 									marginLeft: 32,
-								}}
-								rightIcon={{
-									name: 'trash-o',
+									height: 32,
 									color: 'black',
-									type: 'font-awesome',
 								}}
+								rightIcon={
+									<FontAwesome
+										name='trash-o'
+										type='FontAwesome'
+										size={24}
+										onPress={() => deleteBlogPost(item.id)}
+									/>
+								}
+								// 	{
+								// 	name: 'trash-o',
+								// 	color: 'black',
+								// 	type: 'font-awesome',
+								// }}
 								bottomDivider
 								chevron
 							/>
