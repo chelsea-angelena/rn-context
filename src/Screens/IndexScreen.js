@@ -1,6 +1,12 @@
 import 'react-native-gesture-handler';
 import React, { useContext } from 'react';
-import { SafeAreaView, StyleSheet, View, FlatList } from 'react-native';
+import {
+	SafeAreaView,
+	StyleSheet,
+	View,
+	FlatList,
+	TouchableOpacity,
+} from 'react-native';
 import { Context } from '../Context/BlogContext';
 import { FontAwesome } from '@expo/vector-icons';
 import {
@@ -10,7 +16,6 @@ import {
 	Text,
 	Button,
 	Divider,
-	TouchableOpacity,
 } from 'react-native-elements';
 import colors from '../../colors';
 const theme = {
@@ -20,33 +25,25 @@ const theme = {
 	},
 };
 
-export default function IndexScreen() {
+export default function IndexScreen({ navigation }) {
+	console.log(navigation);
 	const { state, addBlogPost, deleteBlogPost } = useContext(Context);
 	return (
 		<ThemeProvider theme={theme}>
 			<View>
-				<Button
-					titleStyle={{
-						fontFamily: 'HelveticaNeue-Bold',
-						fontSize: 18,
-					}}
-					raised={true}
-					type='solid'
-					buttonStyle={{
-						height: 48,
-						borderRadius: 24,
-						margin: 20,
-						backgroundColor: 'hsl(350, 30%, 34%)',
-					}}
-					title='Add Post'
-					onPress={addBlogPost}
-				/>
+
 				<FlatList
 					data={state}
 					keyExtractor={(blogPost) => blogPost.title}
 					renderItem={({ item }) => {
 						return (
 							<ListItem
+								Component={TouchableOpacity}
+								onPress={() =>
+									navigation.navigate('ShowScreen', {
+										id: item.id,
+									})
+								}
 								title={item.title}
 								style={{ height: 116 }}
 								titleStyle={{
@@ -109,7 +106,5 @@ const styles = StyleSheet.create({
 		marginLeft: 40,
 		alignSelf: 'flex-end',
 	},
-	button: {
-		backgroundColor: colors.charcoalDark,
-	},
+
 });

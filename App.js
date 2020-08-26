@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Nav from './src/Navigation/Nav';
 import { Provider } from './src/Context/BlogContext';
 import { ThemeProvider } from 'react-native-elements';
+import { navigationRef } from './RootNavigation';
 import colors from './colors';
 // import { theme } from './Theme';
 
@@ -25,7 +26,7 @@ const theme = {
 const App = () => {
 	return (
 		<ThemeProvider theme={theme}>
-			<NavigationContainer>
+			<NavigationContainer ref={navigationRef}>
 				<Nav />
 			</NavigationContainer>
 		</ThemeProvider>
