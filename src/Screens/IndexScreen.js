@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
 	SafeAreaView,
 	StyleSheet,
@@ -14,10 +14,15 @@ import {
 	ListItem,
 	ThemeProvider,
 	Text,
+	List,
 	Button,
 	Divider,
 } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/native';
 import colors from '../../colors';
+import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
+
 const theme = {
 	Button: {
 		colors: 'red',
@@ -25,74 +30,64 @@ const theme = {
 	},
 };
 
-export default function IndexScreen({ navigation }) {
-	console.log(navigation);
-	const { state, addBlogPost, deleteBlogPost } = useContext(Context);
-	return (
-		<ThemeProvider theme={theme}>
-			<View>
+export default function IndexScreen(props) {
+	console.log(props.navigation);
+	const navigation = useNavigation();
+	const { state, getBlogPosts, deleteBlogPost } = useContext(Context);
 
-				<FlatList
-					data={state}
-					keyExtractor={(blogPost) => blogPost.title}
-					renderItem={({ item }) => {
-						return (
-							<ListItem
-								Component={TouchableOpacity}
-								onPress={() =>
-									navigation.navigate('ShowScreen', {
-										id: item.id,
-									})
-								}
-								title={item.title}
-								style={{ height: 116 }}
-								titleStyle={{
-									fontFamily: 'HelveticaNeue-Medium',
-									marginLeft: 32,
-									height: 32,
-									color: 'black',
-								}}
-								rightIcon={
-									<FontAwesome
-										name='trash-o'
-										type='FontAwesome'
-										size={24}
-										onPress={() => deleteBlogPost(item.id)}
-									/>
-								}
-								// 	{
-								// 	name: 'trash-o',
-								// 	color: 'black',
-								// 	type: 'font-awesome',
-								// }}
-								bottomDivider
-								chevron
-							/>
-						);
-					}}
-				/>
-				{/* // <View styles={styles.view}>
-						// 	<Text style={styles.title}>{item.title}</Text>
-						// 	<Text style={styles.icontext}><FontAwesome name='trash-o' style={styles.icon}/></Text>
-						// </View> */}
-				{/* );
+	useEffect(() => {
+		getBlogPosts();
+	}, []);
+
+	return (
+		<View>
+			<FlatList
+				data={state}
+				keyExtractor={(blogPost) => blogPost.title}
+				renderItem={({ item }) => {
+					return (
+						<View>
+							<View style={styles.row}>
+								<TouchableOpacity
+									onPress={() =>
+										navigation.navigate('ShowScreen', {
+											id: item.id,
+										})
+									}
+								>
+									<Text style={styles.title}>
+										{item.title}
+									</Text>
+								</TouchableOpacity>
+
+								<TouchableOpacity
+									onPress={() => deleteBlogPost(item.id)}
+								>
+									<Text>
+										<FontAwesome name='trash-o' size={24} />
+									</Text>
+								</TouchableOpacity>
+							</View>
+						</View>
+					);
 				}}
-			/> */}
-			</View>
-		</ThemeProvider>
+			/>
+		</View>
 	);
 }
+
 const styles = StyleSheet.create({
 	row: {
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-	},
-	view: {
+		margin: 20,
+		borderColor: 'black',
+		borderBottomWidth: 0.5,
+		paddingBottom: 30,
+		paddingTop: 0,
+		alignItems: 'center',
 		paddingRight: 20,
-		borderTopWidth: 1,
-		borderBottomWidth: 1,
-		borderColor: 'grey',
 	},
 	title: {
 		fontSize: 18,
@@ -106,5 +101,4 @@ const styles = StyleSheet.create({
 		marginLeft: 40,
 		alignSelf: 'flex-end',
 	},
-
 });

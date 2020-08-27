@@ -32,10 +32,36 @@ export default function Nav(props, { navigation }) {
 						</TouchableOpacity>
 					),
 				})}
+				header
 			/>
-			<Stack.Screen name='ShowScreen' component={ShowScreen} />
-			<Stack.Screen name='CreateScreen' component={CreateScreen} />
-			<Stack.Screen name='EditScreen' component={EditScreen} />
+			<Stack.Screen
+				name='ShowScreen'
+				component={ShowScreen}
+				options={{ title: '' }}
+			/>
+			<Stack.Screen
+				name='CreateScreen'
+				component={CreateScreen}
+				options={{ title: 'New Post' }}
+			/>
+			<Stack.Screen
+				name='EditScreen'
+				component={EditScreen}
+				options={{
+					title: 'Edit Post',
+					headerStyle: {
+						backgroundColor: 'white',
+                        paddingTop: 32,
+                        paddingBottom: 32,
+                        height: 48
+					},
+					headerTintColor: 'black',
+					headerTitleStyle: {
+						fontWeight: 'bold',
+						fontFamily: 'HelveticaNeue',
+					},
+				}}
+			/>
 		</Stack.Navigator>
 	);
 }
